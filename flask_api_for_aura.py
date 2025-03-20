@@ -2,7 +2,12 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from neo4j import GraphDatabase
+
 import os
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))  # Default to 5000 if no PORT env var
+    app.run(host="0.0.0.0", port=port, debug=True)
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -38,8 +43,6 @@ def get_skills():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000, debug=True)
 
 
 @app.route('/get_job_roles', methods=['GET'])
