@@ -31,13 +31,30 @@ def execute_query(query, parameters={}):
 def test():
     return "Flask is working!", 200
 
-@app.route('/get_skills', methods=['GET'])
-def get_skills():
+@app.route('/get_skills_graph', methods=['GET'])
+def get_skills_graph():
     try:
-        with driver.session() as session:
-            result = session.run("MATCH (s:Skill) RETURN s.name AS skill_name")
-            skills = [record["skill_name"] for record in result]
-        return jsonify({"skills": skills})
+        query = """
+        MATCH (s:Skill)
+        OPTIONAL MATCH (s)-[r:COMPLEMENTS|REQUIRES]->(s2:Skill)
+        RETURN s.name AS skill_name, 
+               collect({related_skill: s2.name}) AS related_skills
+        """
+        result = execute_query(query)
+
+        # Formatting the response
+        nodes = []
+        edges = []
+        for record in result:
+            skill_name = record["skill_name"]
+            nodes.append({"id": skill_name, "label": skill_name, "type": "skill"})
+
+            # Add relationships (edges)
+            for related in record["related_skills"]:
+                if related["related_skill"]:  # Avoid None values
+                    edges.append({"source": skill_name, "target": related["related_skill"], "relationship": "COMPLEMENTS/REQUIRES"})
+
+        return jsonify({"nodes": nodes, "edges": edges})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
