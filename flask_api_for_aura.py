@@ -1,10 +1,11 @@
-from flask_cors import CORS
+
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from neo4j import GraphDatabase
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Neo4j Connection Details (Replace with your AuraDB credentials)
 NEO4J_URI = "neo4j+s://c6616c00.databases.neo4j.io"
@@ -21,13 +22,22 @@ def execute_query(query, parameters={}):
 
 # API Endpoints
 
+@app.route('/test', methods=['GET'])
+def test():
+    return "Flask is working!", 200
+
 @app.route('/get_skills', methods=['GET'])
 def get_skills():
-    query = """
-    MATCH (s:Skill) RETURN s.name AS skill_name, s.type AS type, s.category AS category
-    """
-    result = execute_query(query)
-    return jsonify(result)
+    try:
+        with driver.session() as session:
+            result = session.run("MATCH (s:Skill) RETURN s.name AS skill_name")
+            skills = [record["skill_name"] for record in result]
+        return jsonify({"skills": skills})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 @app.route('/get_job_roles', methods=['GET'])
 def get_job_roles():
