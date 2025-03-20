@@ -5,7 +5,9 @@ from neo4j import GraphDatabase
 import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "https://skill-mapping-ui.vercel.app"}})
+
 
 # Neo4j Connection Details (Replace with your AuraDB credentials)
 NEO4J_URI = "neo4j+s://c6616c00.databases.neo4j.io"
