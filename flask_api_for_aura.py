@@ -62,32 +62,33 @@ def get_skills_graph():
 
 @app.route('/get_job_roles', methods=['GET'])
 def get_job_roles():
-    query = """
-        MATCH (j:JobRole)
-        OPTIONAL MATCH (j)-[:REQUIRES]->(s:Skill)
-        OPTIONAL MATCH (j)-[:TRANSITIONS_TO]->(nextRole:JobRole)
-        OPTIONAL MATCH (j)-[:RELATED_TO]->(relatedRole:JobRole)
-        RETURN j.name AS job_role,
-               j.description AS description,
-               collect(DISTINCT s.name) AS required_skills,
-               collect(DISTINCT nextRole.name) AS career_transitions,
-               collect(DISTINCT relatedRole.name) AS related_roles
-    """
-    result = execute_query(query)
+    try:
+        query = """
+            MATCH (j:JobRole)
+            OPTIONAL MATCH (j)-[:REQUIRES]->(s:Skill)
+            OPTIONAL MATCH (j)-[:TRANSITIONS_TO]->(nextRole:JobRole)
+            OPTIONAL MATCH (j)-[:RELATED_TO]->(relatedRole:JobRole)
+            RETURN j.name AS job_role,
+                j.description AS description,
+                collect(DISTINCT s.name) AS required_skills,
+                collect(DISTINCT nextRole.name) AS career_transitions,
+                collect(DISTINCT relatedRole.name) AS related_roles
+        """
+        result = execute_query(query)
 
-    job_roles = []
-    for record in result:
-        job_roles.append({
-            "job_role": record["job_role"],
-            "description": record["description"] if record["description"] else "No description available",
-            "required_skills": record["required_skills"],
-            "career_transitions": record["career_transitions"],
-            "related_roles": record["related_roles"]
-        })
-    return jsonify(job_roles)
+        job_roles = []
+        for record in result:
+            job_roles.append({
+                "job_role": record["job_role"],
+                "description": record["description"] if record["description"] else "No description available",
+                "required_skills": record["required_skills"],
+                "career_transitions": record["career_transitions"],
+                "related_roles": record["related_roles"]
+            })
+        return jsonify(job_roles)
 
-except Exception as e:
-    return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
 
 @app.route('/get_career_transitions', methods=['GET'])
