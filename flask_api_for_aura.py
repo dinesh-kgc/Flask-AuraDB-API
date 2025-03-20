@@ -1,8 +1,10 @@
+from flask_cors import CORS
 from flask import Flask, jsonify, request
 from neo4j import GraphDatabase
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 # Neo4j Connection Details (Replace with your AuraDB credentials)
 NEO4J_URI = "neo4j+s://c6616c00.databases.neo4j.io"
