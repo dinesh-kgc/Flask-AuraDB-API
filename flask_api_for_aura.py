@@ -76,14 +76,14 @@ def get_job_roles():
     result = execute_query(query)
 
     job_roles = []
-        for record in result:
-            job_roles.append({
-                "job_role": record["job_role"],
-                "description": record["description"] if record["description"] else "No description available",
-                "required_skills": record["required_skills"],
-                "career_transitions": record["career_transitions"],
-                "related_roles": record["related_roles"]
-            })
+    for record in result:
+        job_roles.append({
+            "job_role": record["job_role"],
+            "description": record["description"] if record["description"] else "No description available",
+            "required_skills": record["required_skills"],
+            "career_transitions": record["career_transitions"],
+            "related_roles": record["related_roles"]
+        })
     return jsonify(job_roles)
 
 except Exception as e:
