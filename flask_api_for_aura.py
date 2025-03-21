@@ -36,14 +36,19 @@ def get_skills_graph():
                s.type AS type, 
                s.category AS category, 
                s.weightage AS weightage,
-               collect(s2.name) AS related_skills
+               collect({
+                   related_skill: s2.name, 
+                   relationship: type(r)
+               }) AS relationships
         """
         result = execute_query(query)
 
         nodes = []
         edges = []
         for record in result:
-            node_id = record["name"]  # Use the Skill's name as unique ID
+            node_id = record["name"]  # Use the Skill's name as a unique ID
+
+            # Create a node object
             nodes.append({
                 "id": node_id,
                 "label": record["name"],
@@ -52,18 +57,19 @@ def get_skills_graph():
                 "weightage": record["weightage"]
             })
 
-            # Create an edge for each related skill if available
-            for related_skill in record["related_skills"]:
-                if related_skill:
+            # Create edges with the exact relationship type
+            for rel in record["relationships"]:
+                if rel["related_skill"]:
                     edges.append({
                         "source": node_id,
-                        "target": related_skill,
-                        "relationship": "COMPLEMENTS/REQUIRES"
+                        "target": rel["related_skill"],
+                        "relationship": rel["relationship"]  # e.g. "COMPLEMENTS" or "REQUIRES"
                     })
 
         return jsonify({"nodes": nodes, "edges": edges})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.route('/get_job_roles', methods=['GET'])
 def get_job_roles():
