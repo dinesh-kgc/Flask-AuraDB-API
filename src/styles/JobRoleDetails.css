@@ -1,0 +1,41 @@
+.job-role-details {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.job-role-details h1 {
+    color: #007bff;
+    font-size: 24px;
+}
+
+.job-role-details h2 {
+    margin-top: 20px;
+    color: #333;
+    font-size: 20px;
+}
+
+.job-role-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.job-role-details li {
+    background: #f8f9fa;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.job-role-details a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.job-role-details a:hover {
+    text-decoration: underline;
+}

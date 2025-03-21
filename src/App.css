@@ -1,0 +1,92 @@
+/* Sidebar Styling */
+.sidebar {
+    width: 200px;  /* Reduce from 300px */
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: #2C3E50;
+    color: white;
+    padding: 20px;
+  }
+
+  .sidebar a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding: 10px;
+    transition: 0.3s;
+}
+.sidebar a:hover {
+  background-color: #34495E;
+}
+  
+  .sidebar h2 {
+    margin: 0 0 20px;
+    font-size: 22px;
+  }
+  
+  .sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar nav ul li {
+    margin: 15px 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .sidebar nav ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Content Styling */
+  .container {
+    display: flex;
+  }
+  
+  .content {
+    margin-left: 260px;
+    padding: 20px;
+    width: calc(100% - 260px);
+  }
+  
+  h1 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .skill-graph-container {
+    width: calc(100% - 420px);  /* ✅ Ensure space for sidebar */
+    height: 90vh;  /* ✅ Increased height to 90% of viewport */
+    margin-left: 320px;  
+    margin-top: 10px;
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;  /* ✅ Prevents unwanted resizing */
+    overflow: hidden;  /* ✅ Ensures content stays inside */
+}
+
+.cy-container {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /*align-items: center;
+  justify-content: center;*/
+  position: relative;  /*  Ensures Cytoscape does not get forced into a corner */
+  overflow: hidden;  /*  Avoids layout shifts */
+}
+
+
